@@ -1,0 +1,75 @@
+# Ascii-Art-Web
+
+## Description
+
+    `ascii-art-web` is a web application that provides a graphical user interface for the `ascii-art` project.
+It enables users to convert text into ASCII art using various predefined banner styles. This web application
+is designed to be easy to use, allowing users to input their text, select a banner style, and view the resulting
+ASCII art through a web interface.
+
+    The application includes a main page with a form for text input and banner selection. The server processes 
+the submitted data and generates ASCII art, which are displayed to the user in the same interface.
+
+## Features
+
+- **Interactive Web Interface**: A user-friendly form for text input and banner selection.
+- **Multiple Banner Styles**: Choose from different ASCII art banners such as "shadow", "standard", and "thinkertoy".
+- **Result Display**: View the generated ASCII art either on the same page or redirected to a results page.
+- **Error Handling**: Proper HTTP status codes are returned for different scenarios, including successful responses and error cases.
+
+## Authors
+
+- [myacoubi](https://github.com/myacoubi) - Talent at Zone01Oujda
+- [amellagu](https://github.com/amellagu) - Talent at Zone01Oujda
+
+## Usage
+
+To get started with the `ascii-art-web` project, follow these steps:
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/yourusername/ascii-art-web.git
+cd ascii-art-web
+```
+
+### 2. Run the Server: Start the web server by running:
+
+```bash
+go run main.go
+```
+
+### 3. Open your web browser and navigate to http://localhost:3000/.
+
+## Implementation Details
+
+4. **ASCII Art Generation**:
+   - **`AsciiArtMaker` Function**: 
+     - This function accepts user input for text and the selected banner type. 
+     - It generates ASCII art based on the specified banner.
+     - If the user selects "all," it generates ASCII art for all available banners and combines the results.
+     - Any errors encountered during ASCII art generation are collected and returned for handling.
+
+5. **Error Handling**:
+   - The server includes robust error handling to ensure a smooth user experience:
+     - **200 OK**: Returned when requests are successful.
+     - **404 Not Found**: Returned when requested resources, like templates or banners, cannot be found.
+     - **400 Bad Request**: Returned when user input fails validation, such as missing fields.
+     - **500 Internal Server Error**: Returned for unexpected issues that occur during request processing.
+
+6. **HTML Templates**:
+   - HTML templates are stored in a `templates` directory.
+   - The main template (`template.html`) contains a form for user input and a section to display the generated ASCII art.
+   - The template utilizes Go’s `html/template` package to dynamically render content based on user interactions.
+
+7. **User Interface**:
+    - Users can enter text in a text box.
+    - A dropdown menu allows them to select a banner style.
+    - Upon submission, the generated ASCII art is displayed on the same page or redirected based on your implementation choice.
+
+## Endpoints
+- **GET /**: 
+  - Serves the main HTML page where users can enter text and select a banner.
+  
+- **POST /ascii-art**: 
+  - Accepts user input (text and banner choice), generates ASCII art, and displays the result on the page.
