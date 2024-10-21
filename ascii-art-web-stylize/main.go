@@ -4,7 +4,7 @@ import (
 	web "asciiArtWeb/asciiArtFs" // This imports the custom ASCII art generation package from your project.
 	"fmt"
 	"html/template" // Helps with HTML templates that are used to render the webpage.
-	"log"           // Used for logging errors and messages to the console.
+	"log"	        // Used for logging errors and messages to the console.
 	"net/http"      // Allows the creation of an HTTP server.
 )
 
@@ -17,10 +17,10 @@ type Data struct {
 func main() {
 	// Register the handler for the root URL
 	http.HandleFunc("/", AppHandler)
-
+	
 	// Start the web server
 	log.Println("Starting server on http://localhost:3000/")
-	err := http.ListenAndServe(":3000", nil)
+	err := http.ListenAndServe(":3000", nil)////handler
 	if err != nil {
 		log.Fatal("Error starting the server:", err)
 	}
@@ -49,30 +49,21 @@ func AppHandler(w http.ResponseWriter, r *http.Request) {
 	} else {
 		http.Error(w, "405 - Method Not Allowed", 405)
 	}
-
-	// switch r.Method {
-	// case "GET":
-	// 	Get(w, r)
-	// case "POST":
-	// 	Post(w, r)
-	// default:
-	// 	http.Error(w, "405 - Method Not Allowed", 405)
-	// }
 }
 
 func Get(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path != "/" {
+	if r.URL.Path != "/" {/////...
 		http.Error(w, "404 - Not Found", 404)
 		return
 	}
 	//http.ServeFile(w, r, "template.html")
-	tmpl, err := template.ParseFiles("template.html")
+	tmpl, err := template.ParseFiles("template.html")///////tmpl
 	if err != nil {
 		http.Error(w, "404 - Not Found", 404)
 		return
 	}
 	data := Data{}
-	tmpl.Execute(w, data)
+	tmpl.Execute(w, data)//////wr
 }
 
 func Post(w http.ResponseWriter, r *http.Request) {
@@ -87,12 +78,14 @@ func Post(w http.ResponseWriter, r *http.Request) {
 		log.Fatalln(err)
 	}
 
-	text := r.Form.Get("text")
-	banner := r.Form.Get("banner")
+	text := r.Form.Get("text")/// form
+	banner := r.Form.Get("banner") /// get
 	if len(text) == 0 || len(banner) == 0 {
-		http.Error(w, "400 - Bad Request", http.StatusBadRequest) //
+		http.Error(w, "400 - Bad Request", 400)
 		return
 	}
+
+
 
 	asciiArt, errs := AsciiArtMaker(text, banner)
 	tmpl, err := template.ParseFiles("template.html")
