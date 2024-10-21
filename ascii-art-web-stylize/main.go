@@ -1,11 +1,15 @@
 package main
 
 import (
-	web "asciiArtWeb/asciiArtFs" // This imports the custom ASCII art generation package from your project.
 	"fmt"
-	"html/template" // Helps with HTML templates that are used to render the webpage.
-	"log"	        // Used for logging errors and messages to the console.
-	"net/http"      // Allows the creation of an HTTP server.
+	"html/template"
+	"log"
+	"net/http"
+
+	web "asciiArtWeb/asciiArtFs" // This imports the custom ASCII art generation package from your project.
+	// Helps with HTML templates that are used to render the webpage.
+	// Used for logging errors and messages to the console.
+	// Allows the creation of an HTTP server.
 )
 
 type Data struct {
@@ -17,10 +21,10 @@ type Data struct {
 func main() {
 	// Register the handler for the root URL
 	http.HandleFunc("/", AppHandler)
-	
+
 	// Start the web server
 	log.Println("Starting server on http://localhost:3000/")
-	err := http.ListenAndServe(":3000", nil)////handler
+	err := http.ListenAndServe(":3000", nil) // nil: use default miltiplixer / use nil when use (http.HandleFunc("/", AppHandler))
 	if err != nil {
 		log.Fatal("Error starting the server:", err)
 	}
@@ -52,18 +56,18 @@ func AppHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func Get(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path != "/" {/////...
+	if r.URL.Path != "/" { /////...
 		http.Error(w, "404 - Not Found", 404)
 		return
 	}
-	//http.ServeFile(w, r, "template.html")
-	tmpl, err := template.ParseFiles("template.html")///////tmpl
+	// http.ServeFile(w, r, "template.html")
+	tmpl, err := template.ParseFiles("template.html")
 	if err != nil {
 		http.Error(w, "404 - Not Found", 404)
 		return
 	}
 	data := Data{}
-	tmpl.Execute(w, data)//////wr
+	tmpl.Execute(w, data)
 }
 
 func Post(w http.ResponseWriter, r *http.Request) {
@@ -78,20 +82,26 @@ func Post(w http.ResponseWriter, r *http.Request) {
 		log.Fatalln(err)
 	}
 
-	text := r.Form.Get("text")/// form
-	banner := r.Form.Get("banner") /// get
+	fmt.Println(r.Form)
+
+	// 1
+	// text := r.Form.Get("text")
+	// banner := r.Form.Get("banner")
+
+	// 2
+	text := r.Form["text"][0]
+	banner := r.Form["banner"][0]
+
 	if len(text) == 0 || len(banner) == 0 {
 		http.Error(w, "400 - Bad Request", 400)
 		return
 	}
 
-
-
 	asciiArt, errs := AsciiArtMaker(text, banner)
 	tmpl, err := template.ParseFiles("template.html")
 	errs = append(errs, err)
 
-	//Handing template err and AsciiConverter errs
+	// Handing template err and AsciiConverter errs
 	for i := range errs {
 		if errs[i] != nil {
 			notFound := fmt.Errorf("NotFound")
@@ -107,6 +117,7 @@ func Post(w http.ResponseWriter, r *http.Request) {
 	data := Data{
 		Text:     text,
 		Banner:   banner,
-		AsciiArt: template.HTML(asciiArt)}
+		AsciiArt: template.HTML(asciiArt),
+	}
 	tmpl.Execute(w, data)
 }
