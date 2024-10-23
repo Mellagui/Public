@@ -1,0 +1,94 @@
+
+        .body {
+            margin: 0;
+            padding: 0;
+            background-color: #111111;
+            height: 100%;
+        }
+
+        .divh1 {
+            width: 100%;
+            height: 10%;
+            background-color: #111111;
+            padding: 20px 0;
+        }
+
+        .logo {
+            font-size: 50px;
+            color: #fff;
+            text-align: center;
+            margin-top: 10px;
+            margin-bottom: 0;
+            text-shadow: 1px 1px 0 #ccc, 
+                         2px 2px 0 #ccc, 
+                         3px 3px 0 #444, 
+                         4px 4px 0 #444, 
+                         5px 5px 0 #444, 
+                         6px 6px 0 #444, 
+                         5px 5px 15px #999;
+        }
+
+        .divb2 {
+            background-color: #2b2b2b;
+            margin-left: 50px;
+            margin-right: 50px;
+            margin-top: 3%;
+            padding: 20px;
+            border-radius: 10px;
+           
+        }
+
+        .d1 textarea {
+            margin-left: 4px;
+            width: 98%;
+            color: #ffffff;
+            background-color: #111111;
+            height: 50px;
+            border: 1px solid #555;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 15px;
+        }
+
+        .d2 select {
+            margin-left: 4px;
+            background-color: #2b2b2b;
+            color: #ffffff;
+            border: 1px solid #555;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 15px;
+        }
+
+        button {
+            background-color: #1a1a1a;
+            color: white;
+            margin-left: 10px;
+            padding: 10px 20px;
+            font-size: 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .divf3 {
+            margin-left: 50px;
+            margin-right: 50px;
+            margin-top: 5%;
+            margin-bottom: 50px;
+            background-color: #2b2b2b;
+            color: rgb(255, 255, 255);
+            font-family: 'Courier New', Courier, monospace;
+            padding: 20px;
+            border-radius: 10px;
+            overflow: auto; /* Adds scrollbar if content overflows */
+            max-height: 500px; /* Limits the height, scrolls when exceeded */
+        }
+
+        pre {
+            color: #ffffff;
+        }
