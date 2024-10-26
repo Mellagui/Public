@@ -8,6 +8,13 @@ import (
 )
 
 type Data struct {
+	Artists   struct{}
+	Locations struct{}
+	Dates     struct{}
+	Relation  struct{}
+}
+
+type Artists struct {
 	ID           int      `json:"id"`
 	Image        string   `json:"image"`
 	Name         string   `json:"name"`
@@ -16,14 +23,34 @@ type Data struct {
 	FirstAlbum   string   `json:"firstAlbum"`
 	Locations    string   `json:"locations"`
 	ConcertDates string   `json:"concertDates"`
-	Felations    string   `json:"relations"`
+	Relations    string   `json:"relations"`
+}
+
+type Locations struct {
+	ID int `json:"id"`
+	Locations []string `json:"locations"`
+	Dates string `json:"dates"`
+}
+
+type Dates struct {
+	ID int `json:"id"`
+	Dates []string `json:"dates"`
+}
+
+type Relation struct {
+	ID int `json:"id"`
+	DatesLocations []string `json:"dateslocations"`
 }
 
 func main() {
 
-	http.HandleFunc("/home", handler)
+	http.HandleFunc("/Home", handler)
+	http.HandleFunc("/Artists", handlerCard)
+	http.HandleFunc("/Locations", handlerCard)
+	http.HandleFunc("/Dates", handlerCard)
+	http.HandleFunc("/Relation", handlerCard)
 
-	log.Println("Server start in : http://localhost:3000/home")
+	log.Println("Server start in : http://localhost:3000/Home")
 	err := http.ListenAndServe(":3000", nil)
 	if err != nil {
 		log.Fatal("Error:", err)
@@ -33,10 +60,42 @@ func main() {
 func handler(w http.ResponseWriter, r *http.Request) {
 
 	// api url
-	url := "https://groupietrackers.herokuapp.com/api/artists"
+	artistsURL := "https://groupietrackers.herokuapp.com/api/artists"
 
 	// http get request
-	getResp, errG := http.Get(url)
+	getResp, errG := http.Get(artistsURL)
+	if errG != nil {
+		log.Fatal("Error: http get request ", errG)
+	}
+	defer getResp.Body.Close()
+
+	// check status is OK
+	if getResp.StatusCode != 200 {
+		log.Fatal("Error: statu code is not 200", getResp.StatusCode)
+	}
+
+	// decode the JSON response into a stract
+	var apiRes []Artists
+	errj := json.NewDecoder(getResp.Body).Decode(&apiRes)
+	if errj != nil {
+		log.Fatalf("Error: json %v", errj)
+	}
+	//fmt.Println(apiRes)
+
+	tmpl, _ := template.ParseFiles("template.html")
+	data1 := apiRes
+	//fmt.Println(data1)
+
+	tmpl.Execute(w, data1)
+}
+
+func handlerCard(w http.ResponseWriter, r *http.Request) {
+
+	// api url
+	artistsURL := "https://groupietrackers.herokuapp.com/api/artists"
+
+	// http get request
+	getResp, errG := http.Get(artistsURL)
 	if errG != nil {
 		log.Fatal("Error: http get request")
 	}
@@ -48,14 +107,14 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// decode the JSON response into a stract
-	var apiRes []Data
+	var apiRes []Artists
 	errj := json.NewDecoder(getResp.Body).Decode(&apiRes)
 	if errj != nil {
 		log.Fatalf("Error: json %v", errj)
 	}
 	//fmt.Println(apiRes)
 
-	tmpl, _ := template.ParseFiles("template.html")
+	tmpl, _ := template.ParseFiles("templateCard.html")
 	data1 := apiRes
 	//fmt.Println(data1)
 

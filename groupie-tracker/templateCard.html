@@ -3,15 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Groupie-Tracker</title>
+    <title>Groupie-Tracker-Artists</title>
     <style>
-        .container {
-            margin-top: 25px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            justify-content: center; /* Centers cards horizontally */
-        }
     
         .card {
             height: 400px;
@@ -26,31 +19,27 @@
             margin-top: 6px;
         }
     </style>
-    <!--.card {
-            padding: 20px;
-            margin: 10px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }-->
-
 </head>
 <body> 
+    
     <center>
         <div class="heading">
             <h1>Groupie-Tracker</h1>
             <hr>
         </div>
-
-        <div class="container">
-            {{range .}}
-            <div class="card">
+    </center>
+    <div>
+        
+    </div>
+    <p>test</p>
+    
+    <div>
+        <div class="card">
                 <img src="{{.Image}}" alt="{{.Name}}" class="image"/>  <!--if [src] not exesiste [alt] work-->
-                <a href="/Artists"><h3>{{.Name}}</h3></a>
+                <h3>{{.Name}}</h3>
                 <p>creationDate: {{.CreationDate}}</p>
                 <p>firstAlbum: {{.FirstAlbum}}</p>
             </div>
-            {{end}}
         </div>
-    </center>
 </body>
 </html>
