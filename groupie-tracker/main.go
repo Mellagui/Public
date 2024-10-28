@@ -2,17 +2,11 @@ package main
 
 import (
 	"encoding/json" //////////
+	"fmt"
 	"html/template"
 	"log"
 	"net/http"
 )
-
-type Data struct {
-	Artists   struct{}
-	Locations struct{}
-	Dates     struct{}
-	Relation  struct{}
-}
 
 type Artists struct {
 	ID           int      `json:"id"`
@@ -27,18 +21,18 @@ type Artists struct {
 }
 
 type Locations struct {
-	ID int `json:"id"`
+	ID        int      `json:"id"`
 	Locations []string `json:"locations"`
-	Dates string `json:"dates"`
+	Dates     string   `json:"dates"`
 }
 
 type Dates struct {
-	ID int `json:"id"`
+	ID    int      `json:"id"`
 	Dates []string `json:"dates"`
 }
 
-type Relation struct {
-	ID int `json:"id"`
+type Relations struct {
+	ID             int      `json:"id"`
 	DatesLocations []string `json:"dateslocations"`
 }
 
@@ -46,9 +40,6 @@ func main() {
 
 	http.HandleFunc("/Home", handler)
 	http.HandleFunc("/Artists", handlerCard)
-	http.HandleFunc("/Locations", handlerCard)
-	http.HandleFunc("/Dates", handlerCard)
-	http.HandleFunc("/Relation", handlerCard)
 
 	log.Println("Server start in : http://localhost:3000/Home")
 	err := http.ListenAndServe(":3000", nil)
@@ -103,20 +94,20 @@ func handlerCard(w http.ResponseWriter, r *http.Request) {
 
 	// check status is OK
 	if getResp.StatusCode != 200 {
-		log.Fatal("Error: statu code is not 200", getResp.StatusCode)
+		log.Fatal("Error: statu code is not 200", getResp.StatusCode) /////////////::
 	}
 
 	// decode the JSON response into a stract
 	var apiRes []Artists
-	errj := json.NewDecoder(getResp.Body).Decode(&apiRes)
+	errj := json.NewDecoder(getResp.Body).Decode(&apiRes) ///////////////:
 	if errj != nil {
 		log.Fatalf("Error: json %v", errj)
 	}
 	//fmt.Println(apiRes)
 
 	tmpl, _ := template.ParseFiles("templateCard.html")
-	data1 := apiRes
-	//fmt.Println(data1)
+	data1 := apiRes[0]
+	fmt.Println(data1)
 
 	tmpl.Execute(w, data1)
 }

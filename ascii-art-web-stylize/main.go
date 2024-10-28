@@ -23,8 +23,8 @@ func main() {
 	http.HandleFunc("/", AppHandler)
 
 	// Start the web server
-	log.Println("Starting server on http://localhost:3000/")
-	err := http.ListenAndServe(":3000", nil) // nil: use default miltiplixer / use nil when use (http.HandleFunc("/", AppHandler))
+	log.Println("Starting server on http://localhost:8080/")
+	err := http.ListenAndServe(":8080", nil) // nil: use default miltiplixer / use nil when use (http.HandleFunc("/", AppHandler))
 	if err != nil {
 		log.Fatal("Error starting the server:", err)
 	}

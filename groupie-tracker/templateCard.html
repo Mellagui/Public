@@ -5,18 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Groupie-Tracker-Artists</title>
     <style>
-    
+        .body {
+            margin: 0;
+            padding: 0;
+            background-color: aqua;
+        }
         .card {
-            height: 400px;
-            width: 250px;
+            height: auto;
+            width: 90%;
             border: 2px solid #000;
             border-radius: 10px;
+
         }
 
         .image {
             border-radius: 10px; 
             margin: 4px;
-            margin-top: 6px;
+            margin-top: 10px;
         }
     </style>
 </head>
@@ -27,19 +32,23 @@
             <h1>Groupie-Tracker</h1>
             <hr>
         </div>
-    </center>
-    <div>
-        
-    </div>
-    <p>test</p>
-    
-    <div>
+
         <div class="card">
+            <div style="float: left;">
                 <img src="{{.Image}}" alt="{{.Name}}" class="image"/>  <!--if [src] not exesiste [alt] work-->
-                <h3>{{.Name}}</h3>
-                <p>creationDate: {{.CreationDate}}</p>
-                <p>firstAlbum: {{.FirstAlbum}}</p>
+            </div>
+            
+            <div style="float: left; text-align: left;">
+                <h2>{{.Name}}</h2>
+                <p><b>Members: </b><br>{{range .Members}}.........{{.}}</p>{{end}}
+                <p><b>CreationDate: </b>{{.CreationDate}}</p>
+                <p><b>FirstAlbum: </b>{{.FirstAlbum}}</p>
+                <p><b>Location: </b>tttttttttttt</p>
+                <p><b>Dates: </b>tttttttttt</p>
+                <p><b>Relations: </b>tttttttttttt</p>
             </div>
         </div>
+    </center>
+        
 </body>
 </html>
