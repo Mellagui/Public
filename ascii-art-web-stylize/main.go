@@ -18,9 +18,19 @@ type Data struct {
 	AsciiArt template.HTML // AsciiArt: Stores the generated ASCII art.
 }
 
+type ErrData struct {
+	Er string
+	ErrContent string
+}
+
+var templates *template.Template
+
 func main() {
+	templates = template.Must(template.ParseFiles("template.html","ErrPage.html"))
+
 	// Register the handler for the root URL
 	http.HandleFunc("/", AppHandler)
+	http.HandleFunc("/Error", ErrHandler)
 
 	// Start the web server
 	log.Println("Starting server on http://localhost:8080/")
@@ -28,6 +38,14 @@ func main() {
 	if err != nil {
 		log.Fatal("Error starting the server:", err)
 	}
+}
+
+
+
+func ErrHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-type", "ErrPage.html")
+	w.WriteHeader(http.StatusNotFound)
+	templates.ExecuteTemplate(w, "ErrPage.html",nil)
 }
 
 func AsciiArtMaker(text string, banner string) (string, []error) {
@@ -57,13 +75,16 @@ func AppHandler(w http.ResponseWriter, r *http.Request) {
 
 func Get(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/" { /////...
-		http.Error(w, "404 - Not Found", 404)
+		//http.Error(w, "404 - Not Found", 404)
+		p := ErrData{Er: "404", ErrContent: "404 - Not Found"}
+		ErrHandler(w,r)
 		return
 	}
 	// http.ServeFile(w, r, "template.html")
 	tmpl, err := template.ParseFiles("template.html")
 	if err != nil {
-		http.Error(w, "404 - Not Found", 404)
+		//http.Error(w, "404 - Not Found", 404)
+		ErrHandler(w,r)
 		return
 	}
 	data := Data{}
@@ -72,7 +93,8 @@ func Get(w http.ResponseWriter, r *http.Request) {
 
 func Post(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/ascii-art" {
-		http.Error(w, "404- Not Found", 404)
+		//http.Error(w, "404- Not Found", 404)
+		ErrHandler(w,r)
 		return
 	}
 
@@ -106,7 +128,8 @@ func Post(w http.ResponseWriter, r *http.Request) {
 		if errs[i] != nil {
 			notFound := fmt.Errorf("NotFound")
 			if errs[i] == notFound {
-				http.Error(w, "404 - Not Found", 404)
+				//http.Error(w, "404 - Not Found", 404)
+				ErrHandler(w,r)
 			} else {
 				http.Error(w, "500 - Internal Server Error", 500)
 			}
