@@ -44,9 +44,11 @@
         <div class="container">
             {{range .}}
             <div class="card">
-                <img src="{{.Image}}" alt="{{.Name}}" class="image"/>  <!--if [src] not exesiste [alt] work-->
-                <a href="/Artists"><h3>{{.Name}}</h3></a>
-                <p>creationDate: {{.CreationDate}}</p>
+                <a href="/Artists?id={{.ID}}">
+                    <img src="{{.Image}}" alt="{{.Name}}" class="image"/>  <!--if [src] not exesiste [alt] work--> 
+                    <h3>{{.Name}}</h3>
+                    <p>creationDate: {{.CreationDate}}</p>
+                </a>
             </div>
             {{end}}
         </div>

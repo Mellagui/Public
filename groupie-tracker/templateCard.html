@@ -40,12 +40,12 @@
             
             <div style="float: left; text-align: left;">
                 <h2>{{.Name}}</h2>
-                <p><b>Members: </b><br>{{range .Members}}.........{{.}}</p>{{end}}
+                <p><b>Members: </b><br>{{range .Members}}{{.}}</p>{{end}}
                 <p><b>CreationDate: </b>{{.CreationDate}}</p>
                 <p><b>FirstAlbum: </b>{{.FirstAlbum}}</p>
-                <p><b>Location: </b>tttttttttttt</p>
-                <p><b>Dates: </b>tttttttttt</p>
-                <p><b>Relations: </b>tttttttttttt</p>
+                <p><b>Location: </b>{{.Locations}}</p>
+                <p><b>Dates: </b>{{.Dates}}</p>
+                <p><b>Relations: </b>{{.Relations}} </p>
             </div>
         </div>
     </center>
