@@ -36,10 +36,10 @@ func init() {
 
 func main() {
 
-	http.HandleFunc("/Home", handler)
+	http.HandleFunc("/", handler)
 	http.HandleFunc("/Artists", handlerCard)
 
-	log.Println("Server start in : http://localhost:3000/Home")
+	log.Println("Server start in : http://localhost:3000/")
 	err := http.ListenAndServe(":3000", nil)
 	if err != nil {
 		log.Fatal("Error:", err)
@@ -48,7 +48,15 @@ func main() {
 
 func handler(w http.ResponseWriter, r *http.Request) {
 
-	tmpl, _ := template.ParseFiles("template.html")
+	tmpl, err := template.ParseFiles("template.html")
+	if err != nil {
+		http.Error(w, "500 Internal sever error - error parsing html template", 500)
+		fmt.Println(err)
+	}
+	if err := r.ParseForm(); err != nil {
+		http.Error(w, "500 Internal sever error - error parsing form", 500)
+		fmt.Println(err)
+	}
 	data1 := artists
 	//fmt.Println(data1)
 
@@ -57,7 +65,11 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 func handlerCard(w http.ResponseWriter, r *http.Request) {
 
-	tmpl, _ := template.ParseFiles("templateCard.html")
+	tmpl, err := template.ParseFiles("templateCard.html")
+	if err != nil {
+		http.Error(w, "500 Internal sever error - error parsing html template", 500)
+		fmt.Println(err)
+	}
 
 	if err := r.ParseForm(); err != nil {
 		http.Error(w, "500 Internal sever error - error parsing form", 500)
@@ -67,7 +79,7 @@ func handlerCard(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.Atoi(idString)
 
 	if err != nil || id >= len(artists) {
-		http.Error(w, "404 - Not Found", 404)
+		showError(w, "404 - Not Found", 404)
 		fmt.Println("error getting id")
 		return
 	}
@@ -185,4 +197,37 @@ func interfaceToStringSlice(input any) ([]string) {
     }
 
     return stringSlice
+}
+
+// ----------- HTML ERROR -----------
+
+type Error struct {
+	Status int
+	Message string
+}
+
+// Function to render error pages with an HTTP status code
+func showError(w http.ResponseWriter, message string, status int) {
+
+	// Set the HTTP status code
+	w.WriteHeader(status)
+
+	// Parse the error template
+	tmpl, err := template.ParseFiles("ErrPage.html")
+	if err != nil {
+		// If template parsing fails, fallback to a generic error response
+		http.Error(w, "Could not load error page", http.StatusInternalServerError)
+		return
+	}
+
+	httpError := Error{
+		Status: status,
+		Message: message,
+	}
+	// Execute the template with the error message
+	err = tmpl.Execute(w, httpError)
+	if err != nil {
+		// If template execution fails, respond with a generic error
+		http.Error(w, "Could not render error page", http.StatusInternalServerError)
+	}
 }

@@ -76,7 +76,6 @@ func AppHandler(w http.ResponseWriter, r *http.Request) {
 func Get(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/" { /////...
 		//http.Error(w, "404 - Not Found", 404)
-		p := ErrData{Er: "404", ErrContent: "404 - Not Found"}
 		ErrHandler(w,r)
 		return
 	}
@@ -143,4 +142,37 @@ func Post(w http.ResponseWriter, r *http.Request) {
 		AsciiArt: template.HTML(asciiArt),
 	}
 	tmpl.Execute(w, data)
+}
+
+// ----------- HTML ERROR -----------
+
+type Error struct {
+	Status int
+	Message string
+}
+
+// Function to render error pages with an HTTP status code
+func showError(w http.ResponseWriter, message string, status int) {
+
+	// Set the HTTP status code
+	w.WriteHeader(status)
+
+	// Parse the error template
+	tmpl, err := template.ParseFiles("ErrPage.html")
+	if err != nil {
+		// If template parsing fails, fallback to a generic error response
+		http.Error(w, "Could not load error page", http.StatusInternalServerError)
+		return
+	}
+
+	httpError := Error{
+		Status: status,
+		Message: message,
+	}
+	// Execute the template with the error message
+	err = tmpl.Execute(w, httpError)
+	if err != nil {
+		// If template execution fails, respond with a generic error
+		http.Error(w, "Could not render error page", http.StatusInternalServerError)
+	}
 }
