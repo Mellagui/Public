@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Groupie-Tracker-Artists</title>
+    <style>
+        .body {
+            margin: 0;
+            padding: 0;
+            background-color: aqua;
+        }
+        .card {
+            height: auto;
+            width: 90%;
+            border: 2px solid #000;
+            border-radius: 10px;
+
+        }
+
+        .image {
+            border-radius: 10px; 
+            margin: 4px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body> 
+    
+    <center>
+        <div class="heading">
+            <h1>Groupie-Tracker</h1>
+            <hr>
+        </div>
+
+        <div class="card">
+            <div style="float: left;">
+                <img src="{{.Image}}" alt="{{.Name}}" class="image"/>  <!--if [src] not exesiste [alt] work-->
+            </div>
+            
+            <div style="float: left; text-align: left;">
+                <h2>{{.Name}}</h2>
+                <p><b>Members: </b><br>{{range .Members}}{{.}}</p>{{end}}
+                <p><b>CreationDate: </b>{{.CreationDate}}</p>
+                <p><b>FirstAlbum: </b>{{.FirstAlbum}}</p>
+                <p><b>Location: </b>{{.Locations}}</p>
+                <p><b>Dates: </b>{{.Dates}}</p>
+                <p><b>Relations: </b>{{.Relations}} </p>
+            </div>
+        </div>
+    </center>
+        
+</body>
+</html>
