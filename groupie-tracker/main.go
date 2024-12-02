@@ -39,8 +39,8 @@ func main() {
 	http.HandleFunc("/", handler)
 	http.HandleFunc("/Artists", handlerCard)
 
-	log.Println("Server start in : http://localhost:8000/")
-	err := http.ListenAndServe(":8000", nil)
+	log.Println("Server start in : http://localhost:8080/")
+	err := http.ListenAndServe(":8080", nil)
 	if err != nil {
 		log.Fatal("Error:", err)
 	}

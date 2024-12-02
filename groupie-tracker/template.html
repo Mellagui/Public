@@ -141,24 +141,10 @@
             }
             searchExemples.forEach((exemple) => {
                 if (exemple.toLowerCase().includes(searchValue)) {
-                    searchSuggestions.push("<option value='"+ exemple + "'/>")
+                    searchSuggestions.push("<option label='"+ exemple +"' value='"+ exemple.split(" - ")[0] + "'/>")
                 }
             })
             document.getElementById('suggestions').innerHTML = String(searchSuggestions).split(",").join(""); // Removes all commas
-
-            // ------------ EventListener for suggestion click ------------
-            const elements = [...document.getElementsByClassName('a')]; // Convert Html collection an array
-            console.log(elements)
-            elements.forEach((element) => {
-                element.addEventListener("click", (event) => {
-                    const clickedValue = event.target.innerHTML.split(' - ')[0]
-
-                    console.log("Element clicked:", event.target.innerHTML); // Handle the click event
-                    document.getElementById('search').value = clickedValue // set search input
-                    document.getElementById('suggestions').innerHTML = "" // clear suggestions
-                    showResults(clickedValue.toLowerCase()) // Execute search change handler to load search
-                });
-            });
         }
 
         // Function to show results
