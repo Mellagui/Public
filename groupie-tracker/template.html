@@ -68,8 +68,9 @@
             <h1>Groupie-Tracker</h1>
             <hr>
         </div>
-        <input type="text" id="search" placeholder="Type to search..." />
-        <div id="suggestions"></div>
+        <input list="suggestions" type="text" id="search" placeholder="Type to search..." />
+        <datalist id="suggestions">
+        </datalist>
         <hr />
         <div>
 
@@ -140,10 +141,10 @@
             }
             searchExemples.forEach((exemple) => {
                 if (exemple.toLowerCase().includes(searchValue)) {
-                    searchSuggestions.push("<a class='a'>" + exemple + "</a></br>")
+                    searchSuggestions.push("<option value='"+ exemple + "'/>")
                 }
             })
-            document.getElementById('suggestions').innerHTML = String(searchSuggestions.slice(0, 10)).split(",").join(""); // Removes all commas
+            document.getElementById('suggestions').innerHTML = String(searchSuggestions).split(",").join(""); // Removes all commas
 
             // ------------ EventListener for suggestion click ------------
             const elements = [...document.getElementsByClassName('a')]; // Convert Html collection an array
