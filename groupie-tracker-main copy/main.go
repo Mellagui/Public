@@ -1,12 +1,13 @@
 package main
 
 import (
-	"encoding/json" //////////
+	"encoding/json"
 	"fmt"
 	"html/template"
 	"log"
 	"net/http"
 	"strconv"
+	"strings"
 )
 
 type Artist struct {
@@ -35,6 +36,7 @@ func init() {
 }
 
 func main() {
+	http.Handle("/static/", http.StripPrefix("/static", http.HandlerFunc(handleStatic)))
 
 	http.HandleFunc("/", handler)
 	http.HandleFunc("/Artists", handlerCard)
@@ -46,12 +48,44 @@ func main() {
 	}
 }
 
-func handler(w http.ResponseWriter, r *http.Request) {
+func forbidenRountes(path string) bool {
 
-	tmpl, err := template.ParseFiles("template.html")
+	forbidenRountes := []string{"/", "/img/"}
+	for i := range forbidenRountes {
+		if path == forbidenRountes[i] {
+			return true
+		}
+	}
+
+	forbidenSubRountes := []string{"/artistStyle.css/", "/errStyle.css/", "/globalStyle.css/", "/homeStyle.css/", "/error.png/"}
+	for i := range forbidenSubRountes {
+		if strings.Contains(path, forbidenSubRountes[i]) {
+			return true
+		}
+	}
+	return false
+}
+
+func handleStatic(w http.ResponseWriter, r *http.Request) {
+	if forbidenRountes(r.URL.Path) {
+		showError(w, "404 - Page Not Found", 404)
+		return
+	}
+	fs := http.FileServer(http.Dir("static"))
+	fs.ServeHTTP(w, r)
+}
+
+func handler(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path != "/" {
+		showError(w, "404 - Page Not Found", http.StatusNotFound)
+		return
+	}
+
+	tmpl, err := template.ParseFiles("template/Home.html")
 	if err != nil {
-		http.Error(w, "500 Internal sever error - error parsing html template", 500)
+		showError(w, "500 Internal sever error - error parsing html template", 500)
 		fmt.Println(err)
+		return
 	}
 	data1 := artists
 	//fmt.Println(data1)
@@ -60,11 +94,16 @@ func handler(w http.ResponseWriter, r *http.Request) {
 }
 
 func handlerCard(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path != "/Artists" {
+		showError(w, "404 - Page Not Found", http.StatusNotFound)
+		return
+	}
 
-	tmpl, err := template.ParseFiles("templateCard.html")
+	tmpl, err := template.ParseFiles("template/Artist.html")
 	if err != nil {
-		http.Error(w, "500 Internal sever error - error parsing html template", 500)
+		showError(w, "500 Internal sever error - error parsing html template", 500)
 		fmt.Println(err)
+		return
 	}
 
 	idString := r.FormValue("id")
@@ -85,9 +124,9 @@ func getArtists() {
 	artistsURL := "https://groupietrackers.herokuapp.com/api/artists"
 
 	// http get request
-	getResp, errG := http.Get(artistsURL)
-	if errG != nil {
-		log.Fatal("Error: http get request ", errG)
+	getResp, err := http.Get(artistsURL)
+	if err != nil {
+		log.Fatal("Error: http get request", err)
 	}
 	defer getResp.Body.Close()
 
@@ -201,7 +240,7 @@ func showError(w http.ResponseWriter, message string, status int) {
 	w.WriteHeader(status)
 
 	// Parse the error template
-	tmpl, err := template.ParseFiles("ErrPage.html")
+	tmpl, err := template.ParseFiles("template/ErrPage.html")
 	if err != nil {
 		// If template parsing fails, fallback to a generic error response
 		http.Error(w, "Could not load error page", http.StatusInternalServerError)

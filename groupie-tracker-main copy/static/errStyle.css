@@ -1,0 +1,44 @@
+#main {
+  width: 100%;
+  text-align: center;
+  justify-content: center;
+  /* Centers horizontally */
+  align-items: center;
+  /* Centers vertically */
+  margin-bottom: 10vh;
+}
+
+a {
+  color: white;
+}
+h1 {
+  font-size: 50;
+  color: rgba(218, 165, 32, 0.651);
+  margin-bottom: 15vh;
+  font-weight: bold;
+}
+p {
+  color: white;
+  margin-bottom : 60px;
+  font-size: 20px;
+}
+
+button {
+  padding: 0.6rem 1rem;
+  font-size: 15px;
+  background: #333;
+  color: white;
+  text-decoration: none;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+  align-items: center;
+}
+
+
+img {
+  height: 20vh;
+  width: 20vh;
+  margin-bottom: 3vh;
+}
