@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.6.1/nouislider.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.6.1/nouislider.min.js"></script>
+    <title>Groupie-Tracker</title>
+    <link rel="stylesheet" href="/static/globalStyle.css">
+    <link rel="stylesheet" href="/static/homeStyle.css">
+</head>
+
+<body>
+    <center>
+        <div class="heading">
+            <h1 class="logo">𝔊𝔯𝔬𝔲𝔭𝔦𝔢-𝔗𝔯𝔞𝔠𝔨𝔢𝔯</h1>
+        </div>
+        <div class="container">
+            {{range .}}
+            <div class="card">
+                <a href="/Artists?id={{.ID}}">
+                    <img src="{{.Image}}" alt="{{.Name}}" class="image" />
+                    <h3>{{.Name}}</h3>
+                </a>
+            </div>
+            {{end}}
+        </div>
+    </center>
+</body>
+
+</html>
